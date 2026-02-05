@@ -46,15 +46,50 @@ public class Main {
 
         // 5. Final Result
         ScheduleChromosome finalBest = population[0];
-        System.out.println("\n--- FINAL OPTIMAL ALLOCATION ---");
+
+        // Display Task List
+        System.out.println("\n========== TASK LIST ==========");
+        System.out.println("-----------------------------------------------------");
+        System.out.printf("| %-10s | %-15s | %-15s |%n", "Task ID", "Size (MI)", "Priority");
+        System.out.println("-----------------------------------------------------");
+        for (CloudTask task : tasks) {
+            System.out.printf("| %-10d | %-15d | %-15s |%n", task.getId(), task.getLength(), task.getPriorityLabel());
+        }
+        System.out.println("-----------------------------------------------------");
+
+        // Display VM List
+        System.out.println("\n========== VM LIST ==========");
+        System.out.println("---------------------------------------");
+        System.out.printf("| %-10s | %-15s |%n", "VM ID", "MIPS");
+        System.out.println("---------------------------------------");
+        for (VirtualMachine vm : vms) {
+            System.out.printf("| %-10d | %-15d |%n", vm.getId(), vm.getMips());
+        }
+        System.out.println("---------------------------------------");
+
+        // Display Final Allocation
+        System.out.println("\n========== FINAL OPTIMAL ALLOCATION ==========");
         System.out.println("Minimum Time to Finish All Tasks: " + finalBest.getMakespan() + " seconds");
-        System.out.println("Allocation Map (TaskID -> VM_ID):");
+        System.out.println("Allocation Table:");
+        System.out
+                .println("------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-12s | %-10s | %-8s | %-10s | %-15s |%n", "Task ID", "Size (MI)", "Priority",
+                "VM ID", "VM MIPS",
+                "Exec Time (s)");
+        System.out
+                .println("------------------------------------------------------------------------------------------");
 
         int[] genes = finalBest.getGenes();
         for (int i = 0; i < genes.length; i++) {
-            System.out.println("Task " + tasks.get(i).getId() + " (" + tasks.get(i).getLength() + " MI) --> VM "
-                    + vms.get(genes[i]).getId() + " (" + vms.get(genes[i]).getMips() + " MIPS)");
+            CloudTask task = tasks.get(i);
+            VirtualMachine vm = vms.get(genes[i]);
+            double execTime = (double) task.getLength() / vm.getMips();
+
+            System.out.printf("| %-10d | %-12d | %-10s | %-8d | %-10d | %-15.4f |%n",
+                    task.getId(), task.getLength(), task.getPriorityLabel(), vm.getId(), vm.getMips(), execTime);
         }
+        System.out
+                .println("------------------------------------------------------------------------------------------");
 
         ga.shutdown();
     }
@@ -64,7 +99,9 @@ public class Main {
         List<CloudTask> list = new ArrayList<>();
         Random rand = new Random();
         for (int i = 0; i < count; i++) {
-            list.add(new CloudTask(i, 500 + rand.nextInt(4500))); // Random Length 500-5000 MI
+            int length = 500 + rand.nextInt(4500); // Random Length 500-5000 MI
+            int priority = 1 + rand.nextInt(3); // Random Priority 1-3 (Low, Medium, High)
+            list.add(new CloudTask(i, length, priority));
         }
         return list;
     }
