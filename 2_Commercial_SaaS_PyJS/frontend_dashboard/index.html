@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Resource Optimizer SaaS</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background: #f4f4f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fafafa;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>☁️ Cloud Resource Optimizer</h1>
+        <p>AI-Powered Allocation using Genetic Algorithms & RL</p>
+
+        <div style="margin: 20px 0; border: 2px dashed #ccc; padding: 20px; text-align: center;">
+            <h3>Upload Cloud Workload (JSON)</h3>
+            <input type="file" id="fileInput">
+        </div>
+
+        <button class="btn" onclick="runOptimization()">Run Optimization 🚀</button>
+
+        <div id="resultBox" class="results">
+            <h3>✅ Optimization Complete</h3>
+            <p><strong>Total Energy Saved:</strong> <span style="color: green;">14.5%</span></p>
+            <p><strong>Allocation Map:</strong></p>
+            <pre id="jsonOutput">Processing...</pre>
+        </div>
+    </div>
+
+    <script>
+        function runOptimization() {
+            // Mocking the API call
+            document.getElementById('resultBox').style.display = 'block';
+            document.getElementById('jsonOutput').innerText = 'Running AI Engine...';
+
+            setTimeout(() => {
+                const dummyResponse = {
+                    "task_01": "VM_High_Mem_02",
+                    "task_02": "VM_Compute_01",
+                    "task_03": "VM_Compute_01",
+                    "cost": "$0.45/hr"
+                };
+                document.getElementById('jsonOutput').innerText = JSON.stringify(dummyResponse, null, 2);
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
